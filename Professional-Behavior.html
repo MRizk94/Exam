@@ -4,44 +4,138 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>اختبار مهارات السلوك المهني</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* 🎨 المتغيرات والألوان */
     :root{
       --bg:#f7f8fb; --card:#ffffff; --text:#0f1724; --muted:#6b7280; --accent:#0ea5a4;
       --success:#16a34a; --danger:#dc2626; --glass: rgba(15,23,36,0.06);
     }
-    [data-theme="dark"]{ --bg:#0b1220; --card:#071026; --text:#e6eef8; --muted:#9aa6b2; --accent:#34d399; --glass: rgba(255,255,255,0.03); }
-    *{box-sizing:border-box;font-family:'Cairo',sans-serif}
-    body{margin:0;background:var(--bg);color:var(--text);padding:24px}
+    [data-theme="dark"]{ 
+      --bg:#0b1220; --card:#071026; --text:#e6eef8; --muted:#9aa6b2; --accent:#34d399; 
+      --glass: rgba(255,255,255,0.03); 
+    }
+    
+    /* 🖌️ الخطوط والتنسيق الأساسي */
+    *{box-sizing:border-box;font-family:'Cairo',sans-serif; transition: color 0.3s, background 0.3s;}
+    body{margin:0;background:var(--bg);color:var(--text);padding:24px; line-height: 1.6;}
     .container{max-width:1000px;margin:0 auto}
-    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    
+    /* 📐 الرأس (Header) - تحسين الاستجابة */
+    header{
+        display:flex; 
+        gap:12px;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:18px;
+        flex-wrap: wrap; /* تسمح للعناصر بالنزول لسطر جديد */
+    }
     .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:grid;place-items:center;color:white;font-weight:700}
-    h1{font-size:20px;margin:0}
-    p.lead{margin:0;color:var(--muted)}
-    .controls{display:flex;gap:8px;align-items:center}
-    button, .btn{background:var(--card);border:1px solid var(--glass);padding:8px 12px;border-radius:10px;cursor:pointer;transition:all 0.2s}
-    button:hover, .btn:hover{filter:brightness(0.98)}
+    .logo{
+        width:50px; /* تصغير قليلًا */
+        height:50px; /* تصغير قليلًا */
+        border-radius:12px;
+        background:linear-gradient(135deg,var(--accent),#60a5fa);
+        display:grid;place-items:center;
+        color:white;font-weight:800; /* خط أثقل */
+        font-size: 18px;
+    }
+    h1{font-size:22px;margin:0; font-weight: 700;}
+    p.lead{margin:0;color:var(--muted); font-size: 15px;}
+    
+    /* ⚙️ عناصر التحكم (Controls) */
+    .controls{display:flex;gap:8px;align-items:center; flex-wrap: wrap; /* تجميع الأزرار */ }
+    button, .btn{
+        background:var(--card);
+        border:1px solid var(--glass);
+        padding:8px 12px;
+        border-radius:10px;
+        cursor:pointer;
+        transition:all 0.2s;
+        font-size: 14px;
+        white-space: nowrap; /* منع تقسيم نصوص الأزرار */
+    }
+    button:hover, .btn:hover{filter:brightness(0.95); transform: translateY(-1px);}
     .btn-primary{background:var(--accent);color:white;border:none}
-    .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 18px rgba(2,6,23,0.06);margin-bottom:16px}
-    .question{padding:12px;border-radius:10px;border:1px solid var(--glass);margin-bottom:10px}
-    .q-title{font-weight:600;margin-bottom:8px}
+    
+    /* 📦 البطاقة (Card) */
+    .card{
+        background:var(--card);
+        padding:20px; /* زيادة الهامش الداخلي */
+        border-radius:16px; /* زيادة حافة الانحناء */
+        box-shadow:0 10px 30px rgba(2,6,23,0.1); /* ظل أوضح */
+        margin-bottom:20px;
+    }
+    
+    /* ❓ السؤال */
+    .question{padding:14px;border-radius:12px;border:1px solid var(--glass);margin-bottom:12px;}
+    .q-title{font-weight:700;margin-bottom:10px; font-size: 17px;}
     .choices{display:flex;flex-direction:column;gap:8px}
-    label.choice{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;border:1px solid transparent;cursor:pointer}
-    input[type="radio"]{accent-color:var(--accent)}
+    label.choice{
+        display:flex;align-items:center;gap:12px;
+        padding:12px; /* زيادة الهامش الداخلي */
+        border-radius:10px;border:1px solid transparent;
+        cursor:pointer;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    input[type="radio"]{accent-color:var(--accent); transform: scale(1.2); /* تكبير زر الراديو */}
     label.choice:hover{background:var(--glass)}
-    .progress{height:10px;background:linear-gradient(90deg, rgba(14,165,164,0.2), rgba(96,165,250,0.1));border-radius:999px;overflow:hidden}
+
+    /* 📈 شريط التقدم */
+    .progress{height:10px;background:linear-gradient(90deg, var(--accent), #60a5fa30);border-radius:999px;overflow:hidden}
     .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0;transition:width 0.3s}
-    .footer-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:14px}
-    .result{display:none;padding:16px;border-radius:12px}
+    
+    /* 🔽 الإجراءات السفلية (Footer Actions) */
+    .footer-actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:18px; flex-wrap: wrap;}
+    .footer-actions > div:first-child{flex:1; min-width: 150px;}
+    
+    /* ✅ النتائج والتفاصيل */
+    .result{display:none;padding:18px;border-radius:12px; border: 1px solid var(--glass);}
     .result.show{display:block}
-    .correct{color:var(--success);font-weight:700}
-    .wrong{color:var(--danger);font-weight:700}
-    .summary{display:flex;gap:12px;flex-wrap:wrap}
-    .chip{background:var(--glass);padding:8px 10px;border-radius:999px;font-size:14px}
-    .hidden-question{display:none} /* For Test Mode */
-    .controls .btn{font-size:14px}
-    @media (max-width:640px){.brand h1{font-size:18px}.container{padding:12px}.controls .btn{padding:6px 8px;font-size:16px}}
+    .correct{color:var(--success);font-weight:800}
+    .wrong{color:var(--danger);font-weight:800}
+    .summary{display:flex;gap:12px;flex-wrap:wrap; justify-content: center;}
+    .chip{background:var(--glass);padding:8px 12px;border-radius:999px;font-size:15px; font-weight: 600;}
+    .explanation{font-size:13px;color:var(--accent);margin-top:4px;padding-right:12px; font-weight: 600;}
+    
+    /* 📱 تحسينات الشاشات الصغيرة */
+    @media (max-width:768px){
+        body{padding: 16px;}
+        .card{padding: 16px; border-radius: 14px;}
+        
+        /* تجميع العناصر في الرأس */
+        header{
+            flex-direction: column; 
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .brand h1{font-size:18px}
+        .controls{
+            width: 100%; /* جعل شريط التحكم يأخذ عرض كامل */
+            justify-content: space-between; /* توزيع الأزرار */
+            gap: 6px;
+        }
+        .controls .btn, #toggleTheme{
+            font-size: 13px; /* تصغير خط الأزرار لتناسب العرض */
+            padding: 7px 10px;
+        }
+
+        /* تحسين الإجراءات السفلية */
+        .footer-actions{
+            flex-direction: column-reverse; /* وضع شريط التقدم في الأعلى */
+            align-items: stretch;
+        }
+        .footer-actions > div:last-child{ /* مجموعة الأزرار */
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .footer-actions .btn{
+            flex: 1; /* جعل الأزرار تأخذ مساحة متساوية */
+            font-size: 14px;
+        }
+    }
   </style>
 </head>
 <body>
@@ -62,8 +156,8 @@
     </header>
 
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div id="viewModeStatus">عرض جميع الأسئلة — اختر إجابة واحدة لكل سؤال ثم اضغط زر "تأكيد وإظهار النتيجة".</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; flex-wrap: wrap; gap: 8px;">
+        <div id="viewModeStatus" style="font-size: 15px;">عرض جميع الأسئلة — اختر إجابة واحدة لكل سؤال ثم اضغط زر "تأكيد وإظهار النتيجة".</div>
         <div style="text-align:left">
           <div class="chip">عدد الأسئلة: <strong id="questionCount">50</strong></div>
         </div>
@@ -77,17 +171,17 @@
         <button class="btn btn-primary" id="nextBtn">التالي</button>
       </div>
       <div class="footer-actions">
-        <div class="progress" style="flex:1;margin-right:12px"><i id="progressBar"></i></div>
-        <div style="display:flex;gap:8px">
+        <div class="progress"><i id="progressBar"></i></div>
+        <div style="display:flex;gap:8px; flex: 1;">
           <button class="btn" id="clearBtn">إعادة ضبط الإجابات</button>
           <button class="btn btn-primary" id="submitBtn">✅ تأكيد وإظهار النتيجة</button>
         </div>
       </div>
 
-      <div id="result" class="result card" style="margin-top:14px"></div>
+      <div id="result" class="result card" style="margin-top:18px"></div>
     </div>
 
-    <footer style="text-align:center;color:var(--muted);font-size:20px ;margin-top:8px">اختبار مُعدّ بواسطة Dr-Mahmoud R. Saad —  مأمور فحص تجاري (مأمورية ضرائب الفيوم أول).</footer>
+    <footer style="text-align:center;color:var(--muted);font-size:14px ;margin-top:12px">اختبار مُعدّ بواسطة **Dr-Mahmoud R. Saad** —  مأمور فحص تجاري (مأمورية ضرائب الفيوم أول).</footer>
   </div>
 
 <script>
@@ -293,7 +387,7 @@
         <strong>${d.i+1}.</strong> ${item.q}
         <div style="margin-top:6px">إجابتك: <span class="${d.isCorrect? 'correct':'wrong'}">${user}</span></div>
         <div>الإجابة الصحيحة: <strong>${correctText}. ${item.choices[item.a]}</strong></div>
-        <div style="font-size:13px;color:var(--accent);margin-top:2px;padding-right:12px;">**💡 الشرح:** ${item.e}</div>
+        <div class="explanation">**💡 الشرح:** ${item.e}</div>
       </div>`;
     });
     html += '</div>';
