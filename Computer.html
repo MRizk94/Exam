@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اختبار الحاسب الآلي — 50 سؤالًا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* 🎨 المتغيرات والألوان */
+    :root{
+      --bg:#f7f8fb; --card:#ffffff; --text:#0f1724; --muted:#6b7280; --accent:#0ea5a4;
+      --success:#16a34a; --danger:#dc2626; --glass: rgba(15,23,36,0.06);
+    }
+    [data-theme="dark"]{ 
+      --bg:#0b1220; --card:#071026; --text:#e6eef8; --muted:#9aa6b2; --accent:#34d399; 
+      --glass: rgba(255,255,255,0.03); 
+    }
+    
+    /* 🖌️ الخطوط والتنسيق الأساسي */
+    *{box-sizing:border-box;font-family:'Cairo',sans-serif; transition: color 0.3s, background 0.3s;}
+    body{margin:0;background:var(--bg);color:var(--text);padding:24px; line-height: 1.6;}
+    .container{max-width:1000px;margin:0 auto}
+    
+    /* 📐 الرأس (Header) - تحسين الاستجابة */
+    header{
+        display:flex; 
+        gap:12px;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:18px;
+        flex-wrap: wrap;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+        width:50px;
+        height:50px;
+        border-radius:12px;
+        background:linear-gradient(135deg,var(--accent),#60a5fa);
+        display:grid;place-items:center;
+        color:white;font-weight:800;
+        font-size: 18px;
+    }
+    h1{font-size:22px;margin:0; font-weight: 700;}
+    p.lead{margin:0;color:var(--muted); font-size: 15px;}
+    
+    /* ⚙️ عناصر التحكم (Controls) */
+    .controls{display:flex;gap:8px;align-items:center; flex-wrap: wrap;}
+    button, .btn{
+        background:var(--card);
+        border:1px solid var(--glass);
+        padding:8px 12px;
+        border-radius:10px;
+        cursor:pointer;
+        transition:all 0.2s;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    button:hover, .btn:hover{filter:brightness(0.95); transform: translateY(-1px);}
+    .btn-primary{background:var(--accent);color:white;border:none}
+    
+    /* 📦 البطاقة (Card) */
+    .card{
+        background:var(--card);
+        padding:20px;
+        border-radius:16px;
+        box-shadow:0 10px 30px rgba(2,6,23,0.1);
+        margin-bottom:20px;
+    }
+    
+    /* ❓ السؤال */
+    .question{padding:14px;border-radius:12px;border:1px solid var(--glass);margin-bottom:12px;}
+    .q-title{font-weight:700;margin-bottom:10px; font-size: 17px;}
+    .choices{display:flex;flex-direction:column;gap:8px}
+    label.choice{
+        display:flex;align-items:center;gap:12px;
+        padding:12px;
+        border-radius:10px;border:1px solid transparent;
+        cursor:pointer;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    input[type="radio"]{accent-color:var(--accent); transform: scale(1.2);}
+    label.choice:hover{background:var(--glass)}
+
+    /* وضع الاختبار الفردي */
+    .hidden-question{display:none;}
+    
+    /* 📈 شريط التقدم */
+    .progress{height:10px;background:linear-gradient(90deg, var(--accent), #60a5fa30);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0;transition:width 0.3s}
+    
+    /* 🔽 الإجراءات السفلية (Footer Actions) */
+    .footer-actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:18px; flex-wrap: wrap;}
+    .footer-actions > div:first-child{flex:1; min-width: 150px;}
+    
+    /* ✅ النتائج والتفاصيل */
+    .result{display:none;padding:18px;border-radius:12px; border: 1px solid var(--glass);}
+    .result.show{display:block}
+    .correct{color:var(--success);font-weight:800}
+    .wrong{color:var(--danger);font-weight:800}
+    .summary{display:flex;gap:12px;flex-wrap:wrap; justify-content: center;}
+    .chip{background:var(--glass);padding:8px 12px;border-radius:999px;font-size:15px; font-weight: 600;}
+    .explanation{font-size:13px;color:var(--accent);margin-top:4px;padding-right:12px; font-weight: 600;}
+    
+    /* 📱 تحسينات الشاشات الصغيرة */
+    @media (max-width:768px){
+        body{padding: 16px;}
+        .card{padding: 16px; border-radius: 14px;}
+        
+        header{
+            flex-direction: column; 
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .brand h1{font-size:18px}
+        .controls{
+            width: 100%;
+            justify-content: space-between;
+            gap: 6px;
+        }
+        .controls .btn, #toggleTheme{
+            font-size: 13px;
+            padding: 7px 10px;
+        }
+
+        .footer-actions{
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+        .footer-actions > div:last-child{
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .footer-actions .btn{
+            flex: 1;
+            font-size: 14px;
+        }
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">حاسب</div>
+        <div>
+          <h1>اختبار الحاسب الآلي </h1>
+          <p class="lead">اختبر معلوماتك في أساسيات الحاسب، أوفيس، الشبكات، والأمن الرقمي.</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="toggleViewMode" title="تبديل وضع العرض">🔄 وضع الاختبار</button>
+        <button id="toggleTheme" title="تبديل الوضع الليلي">🌙</button>
+        <button class="btn" id="printBtn">🖨️ طباعة/حفظ PDF</button>
+      </div>
+    </header>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; flex-wrap: wrap; gap: 8px;">
+        <div id="viewModeStatus" style="font-size: 15px;">عرض جميع الأسئلة — اختر إجابة واحدة لكل سؤال ثم اضغط زر "تأكيد وإظهار النتيجة".</div>
+        <div style="text-align:left">
+          <div class="chip">عدد الأسئلة: <strong id="questionCount">50</strong></div>
+        </div>
+      </div>
+
+      <div id="questions"></div>
+
+      <div id="testModeNav" style="display:none;gap:8px;justify-content:space-between;margin-bottom:16px;align-items:center;">
+        <button class="btn" id="prevBtn" disabled>السابق</button>
+        <div class="chip" id="currentQuestionNum">1 / 50</div>
+        <button class="btn btn-primary" id="nextBtn">التالي</button>
+      </div>
+      <div class="footer-actions">
+        <div class="progress"><i id="progressBar"></i></div>
+        <div style="display:flex;gap:8px; flex: 1;">
+          <button class="btn" id="clearBtn">إعادة ضبط الإجابات</button>
+          <button class="btn btn-primary" id="submitBtn">✅ تأكيد وإظهار النتيجة</button>
+        </div>
+      </div>
+
+      <div id="result" class="result card" style="margin-top:18px"></div>
+    </div>
+
+    <footer style="text-align:center;color:var(--muted);font-size:14px ;margin-top:12px">اختبار مُعدّ بواسطة Dr-Mahmoud R. Saad —  مأمور فحص تجاري (مأمورية ضرائب الفيوم أول).</footer>
+  </div>
+
+<script>
+  // **********************************************
+  // 1. DATA ARRAY (50 COMPUTER QUESTIONS)
+  // **********************************************
+  const data = [
+    {q: 'ما هو اسم وحدة المعالجة المركزية في الحاسب؟', choices:['RAM','CPU','GPU','SSD'], a:1, e: 'الـ **CPU** (Central Processing Unit) هو عقل الحاسوب الذي يقوم بتنفيذ التعليمات الأساسية.'},
+    {q: 'ما اختصار ذاكرة الوصول العشوائي؟', choices:['ROM','HDD','RAM','CPU'], a:2, e: 'الـ **RAM** (Random Access Memory) هي الذاكرة التي تستخدم لتخزين البيانات التي يستخدمها المعالج حالياً بشكل مؤقت.'},
+    {q: 'أي مما يلي هو نظام تشغيل؟', choices:['Microsoft Word','Windows 10','Google Chrome','Adobe Photoshop'], a:1, e: 'نظام التشغيل (**OS**) هو البرنامج الذي يدير موارد الحاسوب ويسمح بتشغيل التطبيقات.'},
+    {q: 'ما وظيفة القرص الصلب (HDD/SSD)؟', choices:['تخزين البيانات بشكل دائم','زيادة سرعة المعالج','تحسين جودة الشاشة','تقديم صوت أفضل'], a:0, e: 'الأقراص الصلبة هي وحدات التخزين الأساسية التي تحتفظ بالبيانات والبرامج حتى بعد إيقاف تشغيل الجهاز.'},
+    {q: 'ما هو البروتوكول المستخدم لعرض صفحات الويب؟', choices:['FTP','SMTP','HTTP','POP3'], a:2, e: 'بروتوكول **HTTP** (Hypertext Transfer Protocol) هو أساس نقل البيانات لصفحات الويب.'},
+    {q: 'أي من البرامج التالية لمعالجة النصوص؟', choices:['Excel','PowerPoint','Word','Access'], a:2, e: 'Microsoft **Word** هو البرنامج الأكثر شيوعاً لمعالجة وإنشاء المستندات النصية.'},
+    {q: 'ماذا يعني اختصار URL؟', choices:['Universal Resource Locator','Uniform Resource Locator','Universal Reference Link','Unique Resource Link'], a:1, e: 'URL هو اختصار **Uniform Resource Locator**، وهو العنوان الذي يحدد مكان أي مورد على الإنترنت.'},
+    {q: 'ما وظيفة الذاكرة المؤقتة (Cache)؟', choices:['زيادة مساحة التخزين','تسريع الوصول للبيانات المستخدمة بكثرة','حماية الجهاز','تبريد المعالج'], a:1, e: 'الـ **Cache** هي ذاكرة صغيرة وسريعة جداً تُستخدم لتخزين البيانات التي يُحتمل أن يُطلبها المعالج قريباً لتسريع الأداء.'},
+    {q: 'أي من التالي يُعتبر جهاز إدخال؟', choices:['الشاشة','الماوس','الطابعة','السماعات'], a:1, e: 'الماوس (**Mouse**) هو جهاز إدخال (Input device) يُستخدم لإدخال الأوامر والبيانات للحاسوب.'},
+    {q: 'ما الذي يحدد دقة الشاشة؟', choices:['حجم الشاشة بالبوصة','عدد البكسلات (resolution)','نوع كابل الطاقة','سرعة المعالج'], a:1, e: 'دقة الشاشة تحدد بعدد **البكسلات** (Resolution) التي يمكن عرضها أفقياً وعمودياً.'},
+    {q: 'ماذا يعني اختصار PDF؟', choices:['Portable Document Format','Public Data Format','Portable Data File','Personal Document File'], a:0, e: 'PDF هو اختصار **Portable Document Format**، وهي صيغة للمستندات يمكن عرضها بنفس التنسيق على أي جهاز.'},
+    {q: 'أداة Excel المناسبة لحساب مجموع نطاق من الخلايا؟', choices:['AVERAGE','COUNT','SUM','VLOOKUP'], a:2, e: 'دالة **SUM** تُستخدم لجمع قيم نطاق محدد من الخلايا في برنامج Excel.'},
+    {q: 'ما المقصود بـ URL آمن (https)؟', choices:['الاتصال غير مشفر','الاتصال مشفر وآمن','خادم خاص','موقع داخلي فقط'], a:1, e: 'HTTPS (Hypertext Transfer Protocol **Secure**) يعني أن الاتصال مشفر وآمن باستخدام SSL/TLS.'},
+    {q: 'ما تعريف الشبكة المحلية LAN؟', choices:['شبكة داخل مبنى أو موقع محدود','شبكة عالمية','شبكة لاسلكية فقط','شبكة للمطاعم'], a:0, e: 'LAN (**Local Area Network**) هي شبكة تربط الأجهزة داخل منطقة جغرافية صغيرة مثل منزل أو مكتب.'},
+    {q: 'أي جهاز يُستخدم لتوصيل شبكتين مختلفتين وتوجيه البيانات بينهما؟', choices:['Switch','Modem','Router','Printer'], a:2, e: 'الـ **Router** (الموجّه) هو الجهاز المسؤول عن توجيه حزم البيانات بين الشبكات.'},
+    {q: 'ما المقصود بالـ Firewall؟', choices:['جهاز لتسريع الإنترنت','جدار حماية يمنع الوصول غير المصرح','جهاز لطباعة الاستمارات','نوع من الذاكرة'], a:1, e: 'جدار الحماية (**Firewall**) هو نظام أمني يتحكم في حركة مرور الشبكة.'},
+    {q: 'ما أفضل ممارسات كلمة المرور؟', choices:['كلمة قصيرة وسهلة','مشاركة كلمة المرور','كلمة طويلة ومعقدة وتجديدها دوريًا','استخدام نفس كلمة المرور لكل المواقع'], a:2, e: 'يجب أن تكون كلمة المرور **طويلة ومعقدة** (أحرف، أرقام، رموز) وتغييرها بانتظام.'},
+    {q: 'أي مما يلي يُعد تهديدًا أمنيًا؟', choices:['Antivirus','Phishing','Backup','Update'], a:1, e: 'Phishing (**التصيد الاحتيالي**) هو محاولة للحصول على معلومات حساسة عن طريق التنكر كمؤسسة موثوقة.'},
+    {q: 'ما وظيفة برنامج مضاد الفيروسات؟', choices:['حذف الملفات الكبيرة','كشف وإزالة البرمجيات الخبيثة','تسريع الحاسوب','طباعة التقارير'], a:1, e: 'برنامج **مضاد الفيروسات** (Antivirus) مصمم لاكتشاف وإيقاف وإزالة البرامج الضارة والتهديدات الأمنية.'},
+    {q: 'ما الفرق بين HTTP وHTTPS؟', choices:['HTTPS أسرع','HTTP مشفر، HTTPS غير مشفر','HTTPS مشفر وآمن، HTTP غير مشفر','لا فرق'], a:2, e: 'HTTPS مشفر (**Secure**) وآمن باستخدام بروتوكول SSL/TLS، بينما HTTP غير مشفر.'},
+    {q: 'أي من الصيغ التالية لملف الصورة؟', choices:['.docx','.xlsx','.jpg','.pptx'], a:2, e: '.**jpg** (أو .jpeg) هي صيغة شائعة لضغط وتخزين الصور الرقمية.'},
+    {q: 'ما المقصود بـ Backup؟', choices:['نسخة احتياطية من البيانات','حذف البيانات القديمة','تثبيت نظام تشغيل','تنظيف الجهاز'], a:0, e: 'الـ **Backup** هو عملية إنشاء نسخ من البيانات لاستعادتها في حالة فقدان البيانات الأصلية.'},
+    {q: 'ما اسم واجهة المستخدم الرسومية لنظام Windows؟', choices:['Command Line','GUI','BIOS','Kernel'], a:1, e: '**GUI** (Graphical User Interface) هي واجهة المستخدم الرسومية التي تعتمد على الأيقونات والنوافذ.'},
+    {q: 'أي مما يلي يُعتبر جهاز إخراج؟', choices:['الكيبورد','الماوس','الطابعة','المايكروفون'], a:2, e: 'الطابعة (**Printer**) هي جهاز إخراج (Output device) يحول البيانات الرقمية إلى نسخة ورقية.'},
+    {q: 'ما وظيفة BIOS في الحاسوب؟', choices:['تخزين الملفات','بدء تشغيل الحاسوب والفحص الأولي للأجهزة','حماية الملفات','تثبيت البرامج'], a:1, e: '**BIOS** هو برنامج يُشغل أولاً عند بدء التشغيل للتحقق من الأجهزة وتحميل نظام التشغيل.'},
+    {q: 'ما المقصود بالـ Malware؟', choices:['برمجيات مفيدة','برمجيات خبيثة','نظام تشغيل','نوع من الطابعات'], a:1, e: '**Malware** هو اختصار لـ Malicious Software، وهي برامج مصممة للإضرار بالنظام.'},
+    {q: 'أي من التالي يُستخدم لتنسيق النص في Word؟', choices:['Insert','Home','References','Review'], a:1, e: 'شريط "**Home**" في Word يحتوي على معظم أدوات تنسيق الخط والفقرات (مثل الحجم، اللون، التباعد).'},
+    {q: 'ما فائدة خاصية Track Changes في Word؟', choices:['تتبع التغييرات وتسهيل المراجعة','حفظ المستند','طباعة المستند','إنشاء عرض تقديمي'], a:0, e: 'خاصية **Track Changes** تتيح للمستخدمين رؤية وحفظ جميع التعديلات التي طرأت على المستند أثناء المراجعة.'},
+    {q: 'ما الاختصار المستخدم لحفظ ملف بسرعة في معظم البرامج؟', choices:['Ctrl+P','Ctrl+C','Ctrl+S','Ctrl+V'], a:2, e: 'الاختصار **Ctrl+S** (أو Cmd+S على ماك) هو اختصار عالمي لحفظ الملف (Save).'},
+    {q: 'ما المقصود بـ SSD مقارنة بالـ HDD؟', choices:['أبطأ','أسرع وأكثر اعتمادية','أكبر حجمًا دائمًا','نوع من الشبكات'], a:1, e: 'SSD (**Solid State Drive**) أسرع بكثير وأكثر كفاءة من HDD لأنه لا يحتوي على أجزاء متحركة.'},
+    {q: 'ما فائدة استخدام وضع الطائرة (Airplane mode)؟', choices:['تعطيل الاتصالات اللاسلكية مؤقتًا','زيادة سطوع الشاشة','حذف الرسائل','تنظيف الذاكرة'], a:0, e: 'وضع الطائرة يعطل جميع وظائف الاتصال اللاسلكي مثل Wi-Fi، والبلوتوث، والبيانات الخلوية.'},
+    {q: 'أي من التالي يعد مثالاً على نظام إدارة قواعد بيانات (DBMS)؟', choices:['Photoshop','Excel','MySQL','PowerPoint'], a:2, e: '**MySQL** هو نظام إدارة قواعد بيانات علائقية (RDBMS) شائع الاستخدام.'},
+    {q: 'ماذا يعني مصطلح "Open source"؟', choices:['الرمز المصدري غير متاح','الرمز المصدري متاح للجميع','برمجيات مدفوعة فقط','خدمة سحابية فقط'], a:1, e: 'الـ "**Open source**" يعني أن الرمز المصدري للبرنامج متاح للعامة للرؤية والتعديل والتوزيع.'},
+    {q: 'ما المقصود بـ VPN؟', choices:['شبكة محلية داخلية','شبكة افتراضية خاصة لتأمين الاتصال عبر الإنترنت','نظام تشغيل','نوع من الفيروسات'], a:1, e: '**VPN** (Virtual Private Network) هي شبكة افتراضية خاصة تُستخدم لإنشاء اتصال آمن ومشفر عبر شبكة عامة.'},
+    {q: 'ما الذي يقيس سرعة نقل البيانات في الشبكة؟', choices:['البطارية','Bandwidth','Resolution','CPU usage'], a:1, e: 'الـ **Bandwidth** (النطاق الترددي) هو مقياس لأقصى كمية من البيانات يمكن نقلها عبر اتصال شبكة.'},
+    {q: 'أي من التالي يعبر عن مصطلح GUI؟', choices:['Graphical User Interface','Global User Internet','General Use Integration','Graphic Utility Input'], a:0, e: '**GUI** هو اختصار Graphical User Interface، وهي واجهة تسمح بالتفاعل مع الحاسوب باستخدام العناصر الرسومية.'},
+    {q: 'ما هو نظام الألوان المستخدم عادةً في الويب؟', choices:['CMYK','RGB','HSV','Grayscale'], a:1, e: 'نظام **RGB** (Red, Green, Blue) هو النموذج اللوني الأساسي لعرض الصور والألوان على شاشات الحاسوب والويب.'},
+    {q: 'وحدة قياس تردد المعالج (CPU) هي:', choices:['بايت (Byte)','هرتز (Hertz)','فولت (Volt)','بكسل (Pixel)'], a:1, e: 'يُقاس تردد المعالج، الذي يعكس سرعته، بوحدة **الهرتز** (Hz) أو مضاعفاتها (مثل GHz).'},
+    {q: 'أي من التالي ليس لغة برمجة؟', choices:['Python','Java','HTML','C++'], a:2, e: '**HTML** (HyperText Markup Language) هي لغة توصيف تُستخدم لبناء هيكل صفحات الويب، وليست لغة برمجة.'},
+    {q: 'ماذا يسمى جهاز توصيل عدة أجهزة في شبكة محلية واحدة؟', choices:['Router','Switch','Modem','Bridge'], a:1, e: 'الـ **Switch** (المحوّل) يُستخدم لتوصيل أجهزة متعددة داخل شبكة محلية (**LAN**) وإرسال البيانات مباشرة للوجهة الصحيحة.'},
+    {q: 'أصغر وحدة تخزين في الحاسوب هي:', choices:['بايت (Byte)','كيلوبايت (KB)','بت (Bit)','جيجابايت (GB)'], a:2, e: 'الـ **بت** (Bit) هو أصغر وحدة معلومات في الحاسوب، ويمكن أن يكون 0 أو 1.'},
+    {q: 'ما اختصار تنسيق الملف الذي يُستخدم للعروض التقديمية في برنامج PowerPoint؟', choices:['.docx','.xlsx','.pptx','.accdb'], a:2, e: 'ملفات PowerPoint الحديثة تُحفظ بالصيغة **.pptx**.'},
+    {q: 'أي من التالي يُستخدم لتصفية البيانات في برنامج Excel؟', choices:['Pivot Table','Conditional Formatting','Filter','SUM function'], a:2, e: 'أداة **Filter** (التصفية) تسمح بعرض مجموعة فرعية من البيانات بناءً على شروط محددة.'},
+    {q: 'ما هو الغرض الأساسي من تبريد الحاسوب؟', choices:['توفير الطاقة','منع الضوضاء','منع ارتفاع حرارة المكونات والحفاظ على الأداء','تسريع الوصول إلى البيانات'], a:2, e: 'التبريد ضروري لمنع ارتفاع حرارة المكونات (مثل CPU و GPU) والتي قد تؤدي لتلفها أو خفض أدائها.'},
+    {q: 'أي نوع من الشبكات يغطي مساحة جغرافية واسعة (مثل دولة أو العالم)؟', choices:['LAN','WAN','MAN','PAN'], a:1, e: 'شبكة **WAN** (Wide Area Network) تغطي مساحات شاسعة، مثل شبكة الإنترنت.'},
+    {q: 'ما هو الاختصار المستخدم لـ "نسخ" (Copy) في أنظمة Windows؟', choices:['Ctrl+X','Ctrl+C','Ctrl+V','Ctrl+Z'], a:1, e: 'الاختصار **Ctrl+C** (أو Cmd+C) يُستخدم لنسخ العنصر المحدد.'},
+    {q: 'ماذا يسمى برنامج يقوم بتنفيذ مهمة ضارة ويخفي نفسه داخل برنامج عادي ومفيد؟', choices:['Antivirus','Trojan Horse','Firewall','Operating System'], a:1, e: 'حصان طروادة (**Trojan Horse**) هو برنامج ضار يتنكر في شكل برنامج شرعي لجذب المستخدمين لتشغيله.'},
+    {q: 'ما هي الذاكرة التي تستخدمها الطابعة لتخزين المستندات مؤقتًا قبل الطباعة؟', choices:['Cache','Buffer','ROM','Virtual Memory'], a:1, e: 'الـ **Buffer** (الذاكرة المؤقتة) هي مساحة تستخدمها الطابعة لتخزين بيانات المستند القادم أثناء معالجة البيانات الأخرى.'},
+    {q: 'أي طبقة في نموذج OSI مسؤولة عن التشفير وضغط البيانات؟', choices:['الطبقة الفيزيائية (Physical)','طبقة الشبكة (Network)','طبقة الجلسة (Session)','طبقة التقديم (Presentation)'], a:3, e: 'طبقة **التقديم** (Presentation Layer) مسؤولة عن ترجمة البيانات وتشفيرها وضغطها لضمان التوافق بين الأنظمة.'},
+    {q: 'لإنشاء رسم بياني (Chart) في Excel، أي شريط قوائم يتم استخدامه عادةً؟', choices:['Data','Home','Review','Insert'], a:3, e: 'لإدراج العناصر مثل الصور، الجداول، أو الرسوم البيانية في برامج الأوفيس، يتم استخدام شريط **Insert** (إدراج).'}
+  ];
+
+  // **********************************************
+  // 2. JAVASCRIPT LOGIC (Adapted for the new questions and style)
+  // **********************************************
+  const questionsEl = document.getElementById('questions');
+  const progressBar = document.getElementById('progressBar');
+  const resultEl = document.getElementById('result');
+  const testModeNav = document.getElementById('testModeNav');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const currentQuestionNum = document.getElementById('currentQuestionNum');
+  const viewModeStatus = document.getElementById('viewModeStatus');
+  const toggleViewModeBtn = document.getElementById('toggleViewMode');
+
+  let currentQIndex = 0;
+  // Use a unique key for the computer quiz (comp50)
+  let isTestMode = localStorage.getItem('viewMode_comp50') === 'test'; 
+  document.getElementById('questionCount').textContent = data.length;
+
+  function getSavedAnswers(){
+      return JSON.parse(localStorage.getItem('answers_comp50') || '{}');
+  }
+
+  function saveAnswer(index, value){
+      const saved = getSavedAnswers();
+      saved[index] = value;
+      localStorage.setItem('answers_comp50', JSON.stringify(saved));
+  }
+  
+  function render() {
+    const saved = getSavedAnswers();
+    questionsEl.innerHTML = '';
+    data.forEach((item,i)=>{
+      const q = document.createElement('div'); q.className=`question question-${i}`;
+      // Hide question if in test mode and not the current index
+      if(isTestMode && i !== currentQIndex) q.classList.add('hidden-question');
+      
+      q.innerHTML = `<div class="q-title">${i+1}. ${item.q}</div>`;
+      const choices = document.createElement('div'); choices.className='choices';
+      item.choices.forEach((ch,ci)=>{
+        const id = `q${i}_c${ci}`;
+        const checked = (saved[i]===ci) ? 'checked' : '';
+        const label = document.createElement('label'); label.className='choice';
+        label.innerHTML = `<input type="radio" name="q${i}" value="${ci}" ${checked} id="${id}"><span>${String.fromCharCode(65+ci)}. ${ch}</span>`;
+        choices.appendChild(label);
+      });
+      q.appendChild(choices);
+      questionsEl.appendChild(q);
+    });
+    updateProgress();
+    updateViewMode();
+  }
+
+  function updateProgress(){
+    const total = data.length; 
+    const saved = getSavedAnswers();
+    let answered = Object.keys(saved).length;
+    const pct = Math.round((answered/total)*100);
+    progressBar.style.width = pct + '%';
+  }
+
+  function updateViewMode(){
+    if (isTestMode) {
+        // Test Mode UI
+        testModeNav.style.display = 'flex';
+        viewModeStatus.textContent = `وضع الاختبار الفردي — السؤال ${currentQIndex + 1} من ${data.length} — استخدم زريّ التالي/السابق أو اضغط على زر "تأكيد وإظهار النتيجة".`;
+        toggleViewModeBtn.textContent = '📋 عرض الكل';
+        
+        // Update question visibility
+        document.querySelectorAll('.question').forEach((q, i) => {
+            q.classList.add('hidden-question');
+            if (i === currentQIndex) q.classList.remove('hidden-question');
+        });
+
+        // Update navigation buttons
+        prevBtn.disabled = currentQIndex === 0;
+        nextBtn.textContent = currentQIndex === data.length - 1 ? 'عرض النتيجة' : 'التالي';
+        nextBtn.classList.toggle('btn-primary', currentQIndex === data.length - 1);
+        currentQuestionNum.textContent = `${currentQIndex + 1} / ${data.length}`;
+
+        // Scroll to question
+        const currentQEl = document.querySelector(`.question-${currentQIndex}`);
+        if(currentQEl) currentQEl.scrollIntoView({behavior:'smooth', block:'start'});
+
+    } else {
+        // All Questions UI
+        testModeNav.style.display = 'none';
+        viewModeStatus.textContent = 'عرض جميع الأسئلة — اختر إجابة واحدة لكل سؤال ثم اضغط زر "تأكيد وإظهار النتيجة".';
+        toggleViewModeBtn.textContent = '🔄 وضع الاختبار';
+        document.querySelectorAll('.question').forEach(q => q.classList.remove('hidden-question'));
+    }
+  }
+
+  function toggleViewMode(){
+    isTestMode = !isTestMode;
+    localStorage.setItem('viewMode_comp50', isTestMode ? 'test' : 'all');
+    currentQIndex = 0; // Reset to first question on mode change
+    render();
+    resultEl.classList.remove('show'); resultEl.innerHTML=''; // Hide result on view mode change
+    window.scrollTo({top:0,behavior:'smooth'}); 
+  }
+
+  // --- Event Listeners ---
+  questionsEl.addEventListener('change', (e)=>{
+    if(e.target && e.target.name){
+      const name = e.target.name; 
+      const idx = parseInt(name.replace('q',''));
+      const val = parseInt(e.target.value);
+      saveAnswer(idx, val); // Save answer for any mode
+      updateProgress();
+    }
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', ()=>{ 
+    if(confirm('هل أنت متأكد من إعادة ضبط جميع الإجابات؟')){
+      localStorage.removeItem('answers_comp50'); 
+      currentQIndex = 0; // Reset index too
+      render(); 
+      resultEl.classList.remove('show'); 
+      resultEl.innerHTML=''; 
+      window.scrollTo({top:0,behavior:'smooth'}); 
+    }
+  });
+
+  // Handle Next/Previous in Test Mode
+  nextBtn.addEventListener('click', () => {
+    if (isTestMode) {
+        if (currentQIndex < data.length - 1) {
+            currentQIndex++;
+            render();
+        } else {
+            // Last question, submit quiz
+            document.getElementById('submitBtn').click();
+        }
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (isTestMode && currentQIndex > 0) {
+        currentQIndex--;
+        render();
+    }
+  });
+
+  toggleViewModeBtn.addEventListener('click', toggleViewMode);
+
+
+  document.getElementById('submitBtn').addEventListener('click', ()=>{
+    const total = data.length; let correct=0; let unanswered=0; const saved = getSavedAnswers();
+    const details = [];
+    for(let i=0;i<total;i++){
+      const ans = (saved[i]!==undefined)?saved[i]:null; 
+      if(ans===null) unanswered++; 
+      const isCorrect = (ans===data[i].a); 
+      if(isCorrect) correct++; 
+      details.push({i,ans,isCorrect});
+    }
+    const scorePct = Math.round((correct/total)*100);
+    let html = `<h3>النتيجة: ${correct} من ${total} — ${scorePct}%</h3>`;
+    html += `<div class="summary" style="margin-top:10px"><div class="chip">صحيحة: <strong>${correct}</strong></div><div class="chip">غير مُجابة: <strong>${unanswered}</strong></div><div class="chip">خطأ: <strong>${total-correct-unanswered}</strong></div></div>`;
+
+    html += '<hr style="margin:12px 0">';
+    html += '<div style="max-height:450px;overflow:auto;padding:6px">';
+    details.forEach(d=>{
+      const item = data[d.i];
+      const user = (d.ans===null)?'<em style="color:var(--muted)">لم تُجب</em>':`خيار ${String.fromCharCode(65 + d.ans)}`;
+      const correctText = `خيار ${String.fromCharCode(65 + item.a)}`;
+      
+      html += `<div style="padding:8px;border-bottom:1px dashed var(--glass)">
+        <strong>${d.i+1}.</strong> ${item.q}
+        <div style="margin-top:6px">إجابتك: <span class="${d.isCorrect? 'correct':'wrong'}">${user}</span></div>
+        <div>الإجابة الصحيحة: <strong>${correctText}. ${item.choices[item.a]}</strong></div>
+        <div class="explanation">**💡 الشرح:** ${item.e}</div>
+      </div>`;
+    });
+    html += '</div>';
+
+    resultEl.innerHTML = html; resultEl.classList.add('show'); resultEl.scrollIntoView({behavior:'smooth'});
+  });
+
+  document.getElementById('toggleTheme').addEventListener('click', ()=>{
+    const root = document.documentElement; const current = root.getAttribute('data-theme'); 
+    // Use the correct local storage key for theme
+    if(current==='dark'){
+      root.removeAttribute('data-theme'); localStorage.removeItem('theme_comp50'); document.getElementById('toggleTheme').textContent='🌙';
+    } else {
+      root.setAttribute('data-theme','dark'); localStorage.setItem('theme_comp50','dark'); document.getElementById('toggleTheme').textContent='☀️';
+    }
+  });
+
+  document.getElementById('printBtn').addEventListener('click', ()=>{ window.print(); });
+
+  // Load saved settings
+  if(localStorage.getItem('theme_comp50')==='dark'){document.documentElement.setAttribute('data-theme','dark'); document.getElementById('toggleTheme').textContent='☀️';}
+  
+  // Set initial mode from local storage
+  if (localStorage.getItem('viewMode_comp50') === 'test') {
+      isTestMode = true;
+  }
+  render();
+</script>
+</body>
+</html>
